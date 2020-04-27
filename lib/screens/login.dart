@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ilm/providers/auth.dart';
+import 'package:ilm/screens/Accueil.dart';
 import 'package:provider/provider.dart';
 
 
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/http_exception.dart'; //give personal exception
 
 enum AuthMode { Signup, Login }
+
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
@@ -101,6 +103,7 @@ class _AuthCardState extends State<AuthCard> {
       try {
         // Log user in
         await Provider.of<Auth>(context,listen: false ).login(_authData['email'], _authData['password']);
+        Navigator.of(context).pushNamed('/accueil');
       } on  HttpException catch(error){
         var errorMessage = "Authentification echoué";
         if(error.toString().contains("EMAIL_EXISTS")){
@@ -116,11 +119,43 @@ class _AuthCardState extends State<AuthCard> {
         }
         _showErrorDialog(errorMessage);
       }catch (error){
+        print(error);
         var errorMessage = "Impossible de ce connecté pour le moment, veuillez réessayer!";
+        _showErrorDialog(errorMessage);
       }
     } else {
       // Sign user up
-      await Provider.of<Auth>(context,listen: false ).signup(_authData['email'], _authData['password']);
+      try {
+        await Provider.of<Auth>(context,listen: false ).signup(
+            _authData['email'],
+            _authData['password']
+        );
+        Navigator.of(context).pushNamed('/accueil');
+      } on  HttpException catch(error){
+        var errorMessage = "Authentification echoué";
+        if(error.toString().contains("EMAIL_EXISTS")){
+          errorMessage = "Cet email existe déjà";
+        }else if(error.toString().contains("INVALID_EMAIL")){
+          errorMessage = "Cet email est invalide";
+        }else if(error.toString().contains("WEAK_PASSWORD")){
+          errorMessage = "Mot de passe trop faible!";
+        } else if(error.toString().contains("EMAIL_NOT_FOUND")){
+          errorMessage = "Cet email n'existe pas!";
+        }else if(error.toString().contains("INVALID_PASSWORD")){
+          errorMessage = "Mot de passe invalid!";
+        }
+        _showErrorDialog(errorMessage);
+      }catch (error){
+        print(error);
+        var errorMessage = "Impossible de ce connecté pour le moment, veuillez réessayer!";
+        _showErrorDialog(errorMessage);
+      }
+
+     /* Navigator.push(
+        context,
+        //Avec le consumer je cherche a voir sur l'utilisateur est déjà connecter je le met automatiquement à l'accueil (saute le login)
+        MaterialPageRoute(builder: (context) => Accueil()),
+      );*/
     }
     setState(() {
       _isLoading = false;
@@ -162,7 +197,7 @@ class _AuthCardState extends State<AuthCard> {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(80.0),
                     child: Image.asset(
-                      "assets/images/exam.png" ,
+                      "assets/images/LOGO.png" ,
                       width: 100,
                     )
                 ),

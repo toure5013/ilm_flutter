@@ -58,8 +58,11 @@ class _AccueilState extends State<Accueil> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Flutter Http Example"),
+        backgroundColor: Colors.orange,
       ),
-      drawer: menuContent(),
+      drawer: Drawer(
+        child: menuContent(context),
+      ),
       body: isLoading == true ? Center(
         child: CircularProgressIndicator(),
       ) :  ListView.builder(

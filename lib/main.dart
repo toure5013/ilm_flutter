@@ -1,10 +1,15 @@
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+//Provider
+import 'package:ilm/providers/user.dart';
 import 'package:ilm/providers/auth.dart';
+
+//Screen
 import 'package:ilm/screens/Accueil.dart';
 import 'package:ilm/screens/login.dart';
-import 'package:provider/provider.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -16,14 +21,23 @@ class MyApp extends StatelessWidget {
         providers: [
         ChangeNotifierProvider.value(
         value : Auth()
-        )
+        ),
+          //ChangeNotifierProxyProvider<Auth, Users>(create: (context) => Users(1),)
       ],
+      //Avec le consumer je cherche a voir sur l'utilisateur est déjà connecter je le met automatiquement à l'accueil (saute les carousel)
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         home: MyHomePage(title: 'Flutter Demo Home Page'),
+        //Créer les routes ici et utiliser ansuite
+        routes: <String, WidgetBuilder> {
+          "/auth" : (context)=> AuthScreen(),
+          "/login" : (context)=> AuthScreen(),
+          "/signup" : (context)=> AuthScreen(),
+          "/accueil" : (context)=> Accueil(),
+        },
       ),
     );
   }
@@ -50,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     "Expertise",
   ]
   ;
-  List imageLink = ["assets/images/logo.jpeg", "assets/images/assise_sur_livre.png", "assets/images/amis_elves.png", "assets/images/reading_4boi.png", "assets/images/reading_time_gvg0.png", "assets/images/exam.png"];
+  List imageLink = ["assets/images/LOGO.png", "assets/images/assise_sur_livre.png", "assets/images/amis_elves.png", "assets/images/reading_4boi.png", "assets/images/reading_time_gvg0.png", "assets/images/exam.png"];
 
 
   void _incrementCounter() {
@@ -61,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Consumer<Auth> (builder: (ctx, auth, _) =>auth.isAuth ? Accueil() : Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -74,14 +88,15 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>AuthScreen()),
+            //Avec le consumer je cherche a voir sur l'utilisateur est déjà connecter je le met automatiquement à l'accueil (saute le login)
+            MaterialPageRoute(builder: (context) =>auth.isAuth ? Accueil() : AuthScreen()),
           );
         },
         tooltip: 'Connexion',
         backgroundColor: Colors.orange,
         child: Icon(Icons.book),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    ));
   }
 
 
