@@ -102,8 +102,11 @@ class _AuthCardState extends State<AuthCard> {
     if (_authMode == AuthMode.Login) {
       try {
         // Log user in
-        await Provider.of<Auth>(context,listen: false ).login(_authData['email'], _authData['password']);
-        Navigator.of(context).pushNamed('/accueil');
+        await Provider.of<Auth>(context,listen: false ).login(
+            _authData['email'],
+            _authData['password']
+        );
+        Navigator.of(context).pushReplacementNamed(('/accueil'));
       } on  HttpException catch(error){
         var errorMessage = "Authentification echoué";
         if(error.toString().contains("EMAIL_EXISTS")){
@@ -130,7 +133,7 @@ class _AuthCardState extends State<AuthCard> {
             _authData['email'],
             _authData['password']
         );
-        Navigator.of(context).pushNamed('/accueil');
+        Navigator.of(context).pushReplacementNamed(('/accueil'));
       } on  HttpException catch(error){
         var errorMessage = "Authentification echoué";
         if(error.toString().contains("EMAIL_EXISTS")){
@@ -150,12 +153,6 @@ class _AuthCardState extends State<AuthCard> {
         var errorMessage = "Impossible de ce connecté pour le moment, veuillez réessayer!";
         _showErrorDialog(errorMessage);
       }
-
-     /* Navigator.push(
-        context,
-        //Avec le consumer je cherche a voir sur l'utilisateur est déjà connecter je le met automatiquement à l'accueil (saute le login)
-        MaterialPageRoute(builder: (context) => Accueil()),
-      );*/
     }
     setState(() {
       _isLoading = false;
@@ -199,6 +196,7 @@ class _AuthCardState extends State<AuthCard> {
                     child: Image.asset(
                       "assets/images/LOGO.png" ,
                       width: 100,
+                      height: 50,
                     )
                 ),
                 TextFormField(
@@ -239,21 +237,18 @@ class _AuthCardState extends State<AuthCard> {
                     }
                         : null,
                   ),
-                SizedBox(
-                  height: 20,
-                ),
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
                   RaisedButton(
                     child:
-                    Text(_authMode == AuthMode.Login ? 'Connexion' : 'Créer'),
+                    Text(_authMode == AuthMode.Login ? 'Connexion' : 'Créer mon compte', style: TextStyle(color: Colors.white),),
                     onPressed: _submit,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                     padding:
-                    EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
                     color: Colors.orange,
                     textColor: Theme.of(context).primaryTextTheme.button.color,
                   ),
@@ -261,7 +256,7 @@ class _AuthCardState extends State<AuthCard> {
                   child: Text(
                       '${_authMode == AuthMode.Login ? ' Créer un compte' : 'J\'ai déjà un compte'} '),
                   onPressed: _switchAuthMode,
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   textColor: Colors.teal,
                 ),

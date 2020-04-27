@@ -41,8 +41,14 @@ Widget menuContent(context) {
             title: Text('Deconnexion'),
             onTap: (){
               Navigator.of(context).pop();
+              /*
+              //Suprime des pages spécifique precisé dans le ModalRoute.withName('') et rédirige vers le pushName...
+                Navigator.of(context).pushNamedAndRemoveUntil('/screen4', ModalRoute.withName('/screen1'));
+              */
               Provider.of<Auth>(context, listen: false).logout();
-              Navigator.of(context).pushNamed('/login');
+              //Supprime toute les pages précéédente et ramène l'utilisteur sur la page de login
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
             },
           ),
         ),

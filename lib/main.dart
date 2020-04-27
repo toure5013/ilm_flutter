@@ -26,13 +26,23 @@ class MyApp extends StatelessWidget {
       ],
       //Avec le consumer je cherche a voir sur l'utilisateur est déjà connecter je le met automatiquement à l'accueil (saute les carousel)
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'ILM',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          // Define the default font family.
+          fontFamily: 'Georgia',
+          accentColor: Colors.orange[600],
+          textTheme: TextTheme(
+            headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold, color: Colors.white),
+            title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic, color: Colors.white),
+            body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind', color: Colors.white),
+          ),
         ),
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        initialRoute: '/',
+        home: MyHomePage(title: 'ILM'),
         //Créer les routes ici et utiliser ansuite
         routes: <String, WidgetBuilder> {
+          //Dans la creation des routes si on utilise la propiété home en dessus, on ne peu utiliser  la route racine "/", soit on met home et on enlève la route racine
+          //"/" : (context)=> MyHomePage(),
           "/auth" : (context)=> AuthScreen(),
           "/login" : (context)=> AuthScreen(),
           "/signup" : (context)=> AuthScreen(),
@@ -53,6 +63,17 @@ class MyHomePage extends StatefulWidget {
 /*"assets/images/back.jpeg",*/
 class _MyHomePageState extends State<MyHomePage> {
   int counter = 0;
+  @override
+  void initState() {
+    //Si l'utilisateur dure sur la page d'accueil il est renvoyé vers la pges de connexion après 10 secondes
+    super.initState();
+    // The delay fixes it
+    Future.delayed(Duration(seconds: 10)).then((_) {
+      Navigator.pushReplacementNamed(context, '/login');
+    });
+  }
+
+
   List text = ["Apprendre", "Comprendre", "Vaincre", "Expertise", "Meilleur","Expertise",
   ];
   List textsubtitle = [
@@ -75,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Consumer<Auth> (builder: (ctx, auth, _) =>auth.isAuth ? Accueil() : Scaffold(
+    return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -86,17 +107,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: bodyContent()),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(
-            context,
-            //Avec le consumer je cherche a voir sur l'utilisateur est déjà connecter je le met automatiquement à l'accueil (saute le login)
-            MaterialPageRoute(builder: (context) =>auth.isAuth ? Accueil() : AuthScreen()),
-          );
+          Navigator.push(context, new MaterialPageRoute(
+              builder: (context) => Consumer<Auth> (builder: (ctx, auth, _) =>auth.isAuth ? Accueil() : AuthScreen()
+             ),
+          ));
         },
         tooltip: 'Connexion',
         backgroundColor: Colors.orange,
-        child: Icon(Icons.book),
+        focusColor: Colors.teal,
+        child: Icon(Icons.book, color: Colors.white,),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    ));
+    );
   }
 
 
