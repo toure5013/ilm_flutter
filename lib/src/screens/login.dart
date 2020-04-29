@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ilm/models/http_exception.dart';
 import 'package:ilm/providers/auth.dart';
-import 'package:ilm/screens/Accueil.dart';
 import 'package:provider/provider.dart';
 
-
-//Personal modules
-import '../models/http_exception.dart'; //give personal exception
 
 enum AuthMode { Signup, Login }
 
@@ -106,7 +103,7 @@ class _AuthCardState extends State<AuthCard> {
             _authData['email'],
             _authData['password']
         );
-        Navigator.of(context).pushReplacementNamed(('/accueil'));
+        Navigator.of(context).pushReplacementNamed(('/accueilcour'));
       } on  HttpException catch(error){
         var errorMessage = "Authentification echoué";
         if(error.toString().contains("EMAIL_EXISTS")){
@@ -133,7 +130,7 @@ class _AuthCardState extends State<AuthCard> {
             _authData['email'],
             _authData['password']
         );
-        Navigator.of(context).pushReplacementNamed(('/accueil'));
+        Navigator.of(context).pushReplacementNamed(('/accueilcour'));
       } on  HttpException catch(error){
         var errorMessage = "Authentification echoué";
         if(error.toString().contains("EMAIL_EXISTS")){

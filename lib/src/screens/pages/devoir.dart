@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ilm/screens/pages/profil.dart';
+import 'package:ilm/models/quad_clipper.dart';
 import 'package:ilm/src/layout/footer.dart';
 import 'package:ilm/src/layout/header.dart';
+import 'package:ilm/src/screens/pages/devoir.dart';
+import 'package:ilm/src/screens/pages/AccueilCour.dart';
+import 'package:ilm/src/screens/pages/profil.dart';
+import 'package:ilm/src/screens/pages/recomended_page.dart';
 import 'package:ilm/src/theme/color/light_color.dart';
-import 'home_page.dart';
-import 'recomended_page.dart';
 
 
 class Devoir extends StatefulWidget {
@@ -13,7 +15,7 @@ class Devoir extends StatefulWidget {
 }
 
 class _DevoirState extends State<Devoir> {
-  int _index = 0;
+  int _index = 2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,7 @@ class _DevoirState extends State<Devoir> {
             switch(index){
               case 0 :
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+                    MaterialPageRoute(builder: (context) => CourContent()));
                 break;
               case 1 :
                 Navigator.pushReplacement(context,

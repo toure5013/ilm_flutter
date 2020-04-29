@@ -1,14 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:ilm/providers/course.dart';
+import 'package:ilm/src/screens/Accueil.dart';
+import 'package:ilm/src/screens/login.dart';
+import 'package:ilm/src/screens/pages/AccueilCour.dart';
 import 'package:provider/provider.dart';
 
 //Provider
-import 'package:ilm/providers/user.dart';
 import 'package:ilm/providers/auth.dart';
 
-//Screen
-import 'package:ilm/screens/Accueil.dart';
-import 'package:ilm/screens/login.dart';
 
 
 void main() => runApp(MyApp());
@@ -22,6 +22,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
         value : Auth()
         ),
+          ChangeNotifierProvider.value(
+              value : Course()
+          )
           //ChangeNotifierProxyProvider<Auth, Users>(create: (context) => Users(1),)
       ],
       //Avec le consumer je cherche a voir sur l'utilisateur est déjà connecter je le met automatiquement à l'accueil (saute les carousel)
@@ -47,6 +50,8 @@ class MyApp extends StatelessWidget {
           "/login" : (context)=> AuthScreen(),
           "/signup" : (context)=> AuthScreen(),
           "/accueil" : (context)=> Accueil(),
+          "/accueilcour" : (context)=> CourContent(),
+
         },
       ),
     );
@@ -68,14 +73,13 @@ class _MyHomePageState extends State<MyHomePage> {
     //Si l'utilisateur dure sur la page d'accueil il est renvoyé vers la pges de connexion après 10 secondes
     super.initState();
     // The delay fixes it
-    Future.delayed(Duration(seconds: 10)).then((_) {
-      Navigator.pushReplacementNamed(context, '/login');
-    });
+    //Future.delayed(Duration(seconds: 10)).then((_) {Navigator.pushReplacementNamed(context, '/login');});
   }
 
 
   List text = ["Apprendre", "Comprendre", "Vaincre", "Expertise", "Meilleur","Expertise",
   ];
+
   List textsubtitle = [
     "Apprendre",
     "Comprendre",
@@ -108,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(context, new MaterialPageRoute(
-              builder: (context) => Consumer<Auth> (builder: (ctx, auth, _) =>auth.isAuth ? Accueil() : AuthScreen()
+              builder: (context) => Consumer<Auth> (builder: (ctx, auth, _) =>auth.isAuth ? CourContent() : AuthScreen()
              ),
           ));
         },
@@ -144,7 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
           itemCount: _nbreSlide,
           itemBuilder: (BuildContext context, int itemIndex) =>
               Container(
-
                 child: Card(
                   semanticContainer: true,
                   shape: RoundedRectangleBorder(
@@ -166,10 +169,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         ),
                         subtitle: Text(textsubtitle[itemIndex]),
-                        onTap: (){
+                        onTap: ()async {
                           print("clicked");
+                            // Log user in
+                            await Provider.of<Course>(context,listen: false ).saveCourse(
+                                "nsjdbsqkjdbkjqs",
+                                "Masse et poids",
+                                "This specialization from leading researchers at university of washington introduce to you to the exciting high-demand field of machine learning ",
+                               "https://media-exp1.licdn.com/dms/image/C5603AQG2GK8T5W_cDQ/profile-displayphoto-shrink_200_200/0?e=1593648000&v=beta&t=SnOUo0gWh0EGDGwVKZ36OENpFLW933cr-i1tKqWC4-k",
+                              "University of washington",
+                                "8 courses",
+                                "Physique",
+                                 "Force & énergie",
+                                "TOURE",
+                                "SOULEYMANE"
+                            );
+                          
                         },
-                      )
+                      ),
+                      // FlatButton(child: Text("calend"), onPressed: (){Navigator.push(context, new MaterialPageRoute(builder: (context) => eventContent()));}),
                     ],
                   ),
                 ),
