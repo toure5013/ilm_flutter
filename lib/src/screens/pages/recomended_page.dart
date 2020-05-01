@@ -116,58 +116,63 @@ class _RecomendedPageState extends State<RecomendedPage> {
               ),
             ),
             Expanded(
-                child: elment == null ? null :  Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: 15),
-                    Container(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(model["name"],
+                child: elment == null ? null : SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      Container(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Expanded(
+                              child: Text(model["name"],
+                                  style: TextStyle(
+                                      color: LightColor.purple,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            CircleAvatar(
+                              radius: 3,
+                              backgroundColor: background,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(model["profFirstname"], //nocour
                                 style: TextStyle(
-                                    color: LightColor.purple,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          CircleAvatar(
-                            radius: 3,
-                            backgroundColor: background,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(model["profFirstname"], //nocour
-                              style: TextStyle(
-                                color: LightColor.grey,
-                                fontSize: 14,
-                              )),
-                          SizedBox(width: 10)
-                        ],
-                      ),
-                    ),
-                    Text(model["university"],
-                        style: AppTheme.h6Style.copyWith(
-                          fontSize: 12,
-                          color: LightColor.grey,
-                        )),
-                    SizedBox(height: 15),
-                    Text(model["description"],
-                        style: AppTheme.h6Style.copyWith(
-                            fontSize: 12, color: LightColor.extraDarkPurple)),
-                    SizedBox(height: 15),
-                    Row(
-                      children: <Widget>[
-                        chip(model["tag1"], LightColor.darkOrange, height: 5),
-                        SizedBox(
-                          width: 10,
+                                  color: LightColor.grey,
+                                  fontSize: 14,
+                                )),
+                            SizedBox(width: 10)
+                          ],
                         ),
-                        chip(model["tag2"], LightColor.seeBlue, height: 5),
-                      ],
-                    )
-                  ],
-                ))
+                      ),
+                      Text(model["university"],
+                          style: AppTheme.h6Style.copyWith(
+                            fontSize: 12,
+                            color: LightColor.grey,
+                          )),
+                  SizedBox(
+                    height: 5,),
+                      SizedBox(
+                          height: 50,
+                        child : Text(model["description"],
+                          style: AppTheme.h6Style.copyWith(
+                              fontSize: 12, color: LightColor.extraDarkPurple))),
+                      SizedBox(height: 10),
+                      Row(
+                        children: <Widget>[
+                          chip(model["tag1"], LightColor.darkOrange, height: 5),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          chip(model["tag2"], LightColor.seeBlue, height: 5),
+                        ],
+                      )
+                    ],
+                  ) ,
+                ) )
           ],
         ));
   }
