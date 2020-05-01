@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:ilm/providers/course.dart';
-import 'package:ilm/src/screens/Accueil.dart';
+import 'package:ilm/src/screens/pages/accueil.dart';
+import 'package:ilm/src/screens/pages/others/Accueil.dart';
 import 'package:ilm/src/screens/login.dart';
-import 'package:ilm/src/screens/pages/AccueilCour.dart';
+import 'package:ilm/src/screens/pages/others/AccueilCour.dart';
 import 'package:provider/provider.dart';
 
 //Provider
@@ -50,8 +51,8 @@ class MyApp extends StatelessWidget {
           "/login" : (context)=> AuthScreen(),
           "/signup" : (context)=> AuthScreen(),
           "/accueil" : (context)=> Accueil(),
-          "/accueilcour" : (context)=> CourContent(),
-
+          "/accueilcour" : (context)=> AccueilPage(),
+          "/accueil" : (context)=> AccueilPage(),
         },
       ),
     );
@@ -112,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(context, new MaterialPageRoute(
-              builder: (context) => Consumer<Auth> (builder: (ctx, auth, _) =>auth.isAuth ? CourContent() : AuthScreen()
+              builder: (context) => Consumer<Auth> (builder: (ctx, auth, _) =>auth.isAuth ? AccueilPage() : AuthScreen()
              ),
           ));
         },
@@ -128,11 +129,12 @@ class _MyHomePageState extends State<MyHomePage> {
   //---------Body content here-----------
   Widget bodyContent() {
     int _nbreSlide = text.length;
+    double height = MediaQuery.of(context).size.height;
     return Center(
         child:
         CarouselSlider.builder(
           options:  CarouselOptions(
-            height: 350,
+            height: height/2,
             aspectRatio: 16/9,
             viewportFraction: 0.8,
             initialPage: 0,
@@ -141,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
             autoPlay: true,
             autoPlayInterval: Duration(seconds: 3),
             autoPlayAnimationDuration: Duration(milliseconds: 800),
-            autoPlayCurve: Curves.fastOutSlowIn,
+            autoPlayCurve: Curves.easeIn,
             enlargeCenterPage: true,
             scrollDirection: Axis.horizontal,
           ),

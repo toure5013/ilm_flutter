@@ -55,6 +55,7 @@ class _CalendarPageState extends State<CalendarPage> {
             children: <Widget>[
               MyBackButton(),
               SizedBox(height: 30.0),
+              /*
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -92,6 +93,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     ),
                   ]),
               SizedBox(height: 10),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -105,6 +107,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   ),
                 ],
               ),
+
               SizedBox(height: 30),
               Align(
                 alignment: Alignment.centerLeft,
@@ -114,7 +117,9 @@ class _CalendarPageState extends State<CalendarPage> {
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                 ),
               ),
+
               SizedBox(height: 20.0),
+               */
               Container(
                 height: 58.0,
                 child: ListView.builder(

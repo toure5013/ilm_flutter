@@ -103,7 +103,7 @@ class _AuthCardState extends State<AuthCard> {
             _authData['email'],
             _authData['password']
         );
-        Navigator.of(context).pushReplacementNamed(('/accueilcour'));
+        Navigator.of(context).pushReplacementNamed(('/accueil'));
       } on  HttpException catch(error){
         var errorMessage = "Authentification echoué";
         if(error.toString().contains("EMAIL_EXISTS")){

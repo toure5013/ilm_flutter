@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ilm/models/quad_clipper.dart';
+import 'package:ilm/src/layout/categoryinfo.dart';
 import 'package:ilm/src/layout/footer.dart';
 import 'package:ilm/src/layout/header.dart';
+import 'package:ilm/src/screens/pages/accueil.dart';
 import 'package:ilm/src/screens/pages/devoir.dart';
-import 'package:ilm/src/screens/pages/AccueilCour.dart';
+import 'package:ilm/src/screens/pages/others/AccueilCour.dart';
 import 'package:ilm/src/screens/pages/profil.dart';
 import 'package:ilm/src/screens/pages/recomended_page.dart';
 import 'package:ilm/src/theme/color/light_color.dart';
@@ -16,8 +18,10 @@ class Devoir extends StatefulWidget {
 
 class _DevoirState extends State<Devoir> {
   int _index = 2;
+  double width;
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           showSelectedLabels: false,
@@ -36,7 +40,7 @@ class _DevoirState extends State<Devoir> {
             switch(index){
               case 0 :
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => CourContent()));
+                    MaterialPageRoute(builder: (context) => AccueilPage()));
                 break;
               case 1 :
                 Navigator.pushReplacement(context,
@@ -54,17 +58,27 @@ class _DevoirState extends State<Devoir> {
 
           },
         ),
-        body: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  headerContent(context, 'Devoir'),
-                  SizedBox(height: 20),
-                  SizedBox(height: 0),
-                ],
-              ),
-        )
-        )
+        body:NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              flexAppBarContent("Dévoir", 150.0, "assets/images/exam.png", Colors.orange),
+            ];
+          },
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(height: 20),
+                //categoryRow("Rétrouvez vos cours ici", width),
+                new Expanded(
+                  child:
+                CircularProgressIndicator() ,
+                ),
+              ],
+            ),
+          ),
+        ),
     );
   }
 }

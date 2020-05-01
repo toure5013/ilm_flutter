@@ -37,8 +37,10 @@ Widget headerContent(BuildContext context, String headerText) {
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Stack(
                       children: <Widget>[
-                        Image.asset("assets/images/LOGO.png", width: 70,),
-
+                        Image.asset(
+                          "assets/images/LOGO.png",
+                          width: 70,
+                        ),
                         Align(
                             alignment: Alignment.center,
                             child: Text(
@@ -55,7 +57,6 @@ Widget headerContent(BuildContext context, String headerText) {
   );
 }
 
-
 //----Circular container in header
 Widget _circularContainer(double height, Color color,
     {Color borderColor = Colors.transparent, double borderWidth = 2}) {
@@ -70,15 +71,12 @@ Widget _circularContainer(double height, Color color,
   );
 }
 
-
-
 //____________________________________________________________________________________
 Widget headerPurple(BuildContext context) {
   var width = MediaQuery.of(context).size.width;
   return ClipRRect(
     borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)
-    ),
+        bottomLeft: Radius.circular(40), bottomRight: Radius.circular(40)),
     child: Container(
         height: 200,
         width: width,
@@ -145,5 +143,34 @@ Widget headerPurple(BuildContext context) {
                     )))
           ],
         )),
+  );
+}
+
+//------------------------------------Collapsing toolbar ------
+Widget flexAppBarContent(
+    String screenName,
+  width, String imgName, color
+) {
+  return SliverAppBar(
+      backgroundColor: Colors.white,
+      leading: Image.asset(
+        "assets/images/LOGO.png",
+        width: 10,
+        height: 10,
+      ),
+      expandedHeight: width,
+      floating: false,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Text(
+          screenName,
+          style: TextStyle(
+              color: color, fontSize: 20,  fontWeight: FontWeight.bold),
+        ),
+        background: Image.asset(
+          imgName,
+          fit: BoxFit.cover,),
+      ),
   );
 }
