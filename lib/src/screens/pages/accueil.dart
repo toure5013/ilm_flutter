@@ -9,13 +9,11 @@ import 'package:ilm/src/layout/decorators.dart';
 import 'package:ilm/src/layout/header.dart';
 import 'package:ilm/src/screens/calendar/calendar_page.dart';
 import 'package:ilm/src/screens/pages/devoir.dart';
-import 'package:ilm/src/screens/pages/others/AccueilCour.dart';
 import 'package:ilm/src/screens/pages/profil.dart';
 import 'package:ilm/src/screens/pages/recomended_page.dart';
 import 'package:ilm/src/theme/color/light_color.dart';
 import 'package:ilm/src/theme/theme.dart';
 import 'package:provider/provider.dart';
-import 'dart:math' as Math;
 
 class AccueilPage extends StatefulWidget {
   @override
@@ -29,16 +27,6 @@ class _AccueilPageState extends State<AccueilPage> {
   List cardCont  = [] ;
 
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    if(isLoading){
-      getData();
-    }else{
-      return;
-    }
-  }
   //Pour afficher un message d'erreur
   void _showErrorDialog(String message){
     showDialog(context: context, builder: (ctx) =>AlertDialog(
@@ -53,32 +41,6 @@ class _AccueilPageState extends State<AccueilPage> {
         )
       ],
     ));
-  }
-
-  Future getData() async {
-    final token = "xxxxxx"; //uses Shared preferences to get data
-    var response =    await Provider.of<Course>(context,listen: false ).getCourses(token);
-    if(response != null) {
-      print("-------------------------- response Transform to list-------------------------- ");
-      response.forEach((key, value){
-        print(key);
-        listCourse.add( json.encode (value));
-        print(cardCont);
-      });
-
-      if(listCourse != null){
-        if(mounted) {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      }else{
-        var _errormessage = "Un problème est survenue veuillez verifier votre connection";
-        isLoading = true;
-        _showErrorDialog(_errormessage);
-      }
-
-    }
   }
 
 

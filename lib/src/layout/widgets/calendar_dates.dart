@@ -15,17 +15,25 @@ class CalendarDates extends StatelessWidget {
       padding: const EdgeInsets.only(right: 20.0),
       child: Column(
         children: <Widget>[
-          Text(
-            day,
-            style: TextStyle(
-                fontSize: 16, color: dayColor, fontWeight: FontWeight.w400),
+
+          GestureDetector(
+            onTap: () { print("I was tapped!"); },
+            child:   Text(
+              day,
+              style: TextStyle(
+                  fontSize: 16, color: dayColor, fontWeight: FontWeight.w400),
+            ),
           ),
-          SizedBox(height: 10.0),
-          Text(
-            date,
-            style: TextStyle(
-                fontSize: 16, color: dateColor, fontWeight: FontWeight.w700),
-          ),
+          SizedBox(height: 5.0),
+          InkWell(
+            child:  Text(
+              date,
+              style: TextStyle(
+                  fontSize: 16, color: dateColor, fontWeight: FontWeight.w700),
+            ),
+            onTap: () {print("value of your text");},
+          )
+
         ],
       ),
     );

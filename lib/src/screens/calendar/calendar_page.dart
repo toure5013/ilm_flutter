@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ilm/models/dates_list.dart';
+import 'package:ilm/providers/calendar.dart';
 import 'package:ilm/src/layout/widgets/back_button.dart';
 import 'package:ilm/src/layout/widgets/calendar_dates.dart';
 import 'package:ilm/src/layout/widgets/task_container.dart';
 import 'package:ilm/src/screens/calendar/create_new_task_page.dart';
 import 'package:ilm/src/theme/calendar/theme/colors/light_colors.dart';
-
+import 'package:provider/provider.dart';
 
 
 class CalendarPage extends StatefulWidget {
@@ -14,112 +17,94 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  double width;
+  var isLoading = true;
+  List calendarData = [];
 
-  Widget _dashedText() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 15),
-      child: Text(
-        '------------------------------------------',
-        maxLines: 1,
-        style:
-        TextStyle(fontSize: 20.0, color: Colors.black12, letterSpacing: 5),
-      ),
-    );
-  }
+  Future getCalendarData() async {
+    final token = "xxxxxx"; //uses Shared preferences to get data
+    var response =    await Provider.of<Calendar>(context,listen: false ).getCalendar(token);
+    if(response != null) {
+      print("-------------------------- response Transform to list-------------------------- ");
+      response.forEach((key, value){
+        print(key);
+        calendarData.add( json.encode (value));
+      });
+      print(calendarData);
+      if(calendarData != null){
+        if(mounted) {
+          setState(() {
+            isLoading = false;
 
-  var devoirLength = 0;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if(devoirs != null){
-      devoirLength = devoirs.length;
-
+          });
+        }
+      }else{
+        var _errormessage = "Un problème est survenue veuillez verifier votre connection";
+        isLoading = true;
+        _showErrorDialog(_errormessage);
+      }
     }
   }
 
 
+  //Pour afficher un message d'erreur
+  void _showErrorDialog(String message){
+    showDialog(context: context, builder: (ctx) =>AlertDialog(
+      title: Text("Une erreur est survenue"),
+      content: Text(message),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("Ok"),
+          onPressed: (){
+            Navigator.of(ctx).pop();
+          },
+        )
+      ],
+    ));
+  }
+
+
+
+  Widget _dashedText() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Text(
+        '------------------------------------------',
+        maxLines: 1,
+        style:
+            TextStyle(fontSize: 20.0, color: Colors.black12, letterSpacing: 5),
+      ),
+    );
+  }
+
+  var calendarDataLength = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (calendarData != null) {
+      calendarDataLength = calendarData.length;
+      getCalendarData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(
             20,
-            20,
+            15,
             20,
             0,
           ),
           child: Column(
             children: <Widget>[
-              MyBackButton(),
-              SizedBox(height: 30.0),
-              /*
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "CALENDRIER",
-                      style: TextStyle(
-                          fontSize: 30.0, fontWeight: FontWeight.w700),
-                    ),
-                    Container(
-                      height: 40.0,
-                      width: 120,
-                      decoration: BoxDecoration(
-                        color: LightColors.kGreen,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateNewTaskPage(),
-                            ),
-                          );
-                        },
-                        child: Center(
-                          child: Text(
-                            '+ Tache',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
-              SizedBox(height: 10),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Votre liste de tâches',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 30),
-              Align(
-                alignment: Alignment.centerLeft,
-                //DATE A METTRE A JOUR
-                child: Text(
-                  'DATE XXXX, 2020',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                ),
-              ),
-
-              SizedBox(height: 20.0),
-               */
+              _dashedText(),
+              // MyBackButton(),
+              SizedBox(height: 10.0),
               Container(
                 height: 58.0,
                 child: ListView.builder(
@@ -131,10 +116,32 @@ class _CalendarPageState extends State<CalendarPage> {
                       date: dates[index],
                       dayColor: index == 0 ? LightColors.kRed : Colors.black54,
                       dateColor:
-                      index == 0 ? LightColors.kRed : LightColors.kDarkBlue,
+                          index == 0 ? LightColors.kRed : LightColors.kDarkBlue,
                     );
                   },
                 ),
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Début",
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black12,
+                        letterSpacing: 5),
+                  ),
+                  Text(
+                    "Fin",
+                    maxLines: 1,
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black12,
+                        letterSpacing: 5),
+                  ),
+                ],
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -145,52 +152,23 @@ class _CalendarPageState extends State<CalendarPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Expanded(
-                          flex: 1,
-                          //L'HEURE ICI
                           child: ListView.builder(
-                            itemCount: time.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) =>
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(vertical: 15.0),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    //L'HEURE ICI
-                                    child: Text(
-                                      '${time[index]} ${time[index] > 8 ? 'PM' : 'AM'}',
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                            flex: 5,
-                            child: ListView.builder(
-                              itemCount: devoirs == null ? 0 : devoirs.length,
+                              itemCount: calendarData == null ? 0 : calendarData.length,
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) =>
-                                  Padding(
-                                      padding:
-                                      const EdgeInsets.symmetric(vertical: 15.0),
-                                      child: tacheInfo(devoirs[index]["title"], devoirs[index]["description"], devoirs[index]["color"] )
-                                  ),
-                            )
+                                  Column(
+                                    children: <Widget>[
+                                      tacheUser(calendarData[index]),
+                                      _dashedText(),
+                                    ],
+                                  )),
                         )
                       ],
                     ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -199,18 +177,53 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   //Generer ici
-  Widget tacheInfo(String title, String description,color){
+  Widget tacheInfo(String title, String description, color) {
+    Color matColor;
+    if(color is String){
+        matColor =   Color(0xff4ffa49);
+    }
     return Align(
       alignment: Alignment.centerLeft,
       child: TaskContainer(
         title: title,
-        subtitle:
-        description,
-        boxColor: color,
+        subtitle: description,
+        boxColor: matColor,
       ),
     );
   }
 
+  Widget tacheUser(devoirs) {
+    var calendarContent = json.decode(devoirs);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        //SizedBox(width: 20,),
+        //L'HEURE ICI
+        ClipRRect(
+            borderRadius: BorderRadius.circular(80.0),
+            child: Text(
+              calendarContent["debut"].toString(),
+              maxLines: 1,
+              style: TextStyle(
+                  fontSize: 20.0, color: Colors.orange[100], letterSpacing: 5),
+            )),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(80.0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
+              child: tacheInfo(
+                  calendarContent["title"].toString(), calendarContent["description"].toString(), calendarContent["color"]),
+            )),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(80.0),
+          child: Text(
+            calendarContent["fin"].toString(),
+            maxLines: 1,
+            style: TextStyle(
+                fontSize: 20.0, color: Colors.red[200], letterSpacing: 5),
+          ),
+        ),
+      ],
+    );
+  }
 }
-
-

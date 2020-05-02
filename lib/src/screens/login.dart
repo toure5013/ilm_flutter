@@ -193,46 +193,76 @@ class _AuthCardState extends State<AuthCard> {
                     child: Image.asset(
                       "assets/images/LOGO.png" ,
                       width: 100,
-                      height: 50,
+                      height: 40,
                     )
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Votre email est invalid!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = value;
-                  },
+                Container(
+                  margin: EdgeInsets.only(bottom: 05, top: 05),
+                  child: TextFormField(
+                    cursorColor: Colors.orange,
+                    decoration: new InputDecoration(
+                        labelText: 'E-Mail',
+                        border: new OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
+                          ),
+                        )),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value.isEmpty || !value.contains('@')) {
+                        return 'Votre email est invalid!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['email'] = value;
+                    },
+                  ),
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return 'Mot de passe trop court!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['password'] = value;
-                  },
+                Container(
+                  margin: EdgeInsets.only(bottom: 05, ),
+                  child: TextFormField(
+                      decoration: new InputDecoration(
+                          labelText: 'Password',
+                        border: new OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(10.0),
+                          ),
+
+                        )),
+                    obscureText: true,
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value.isEmpty || value.length < 5) {
+                        return 'Mot de passe trop court!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['password'] = value;
+                    },
+                  ),
                 ),
                 if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                      if (value != _passwordController.text) {
-                        return 'Mot de passe invalide!';
+                  Container(
+                    margin: EdgeInsets.only(bottom: 05, ),
+                    child:      TextFormField(
+                      enabled: _authMode == AuthMode.Signup,
+                      decoration: new InputDecoration(
+                          labelText: 'Confirm Password',
+                          border: new OutlineInputBorder(
+                            borderRadius: const BorderRadius.all(
+                              const Radius.circular(10.0),
+                            ),
+
+                          )),
+                      obscureText: true,
+                      validator: _authMode == AuthMode.Signup
+                          ? (value) {
+                        if (value != _passwordController.text) {
+                          return 'Mot de passe invalide!';
+                        }
                       }
-                    }
-                        : null,
+                          : null,
+                    ),
                   ),
                 if (_isLoading)
                   CircularProgressIndicator()

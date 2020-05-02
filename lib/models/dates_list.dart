@@ -51,21 +51,38 @@ var devoirs = [
   {
     "title" : "TITRE 1",
     "description" : "DESCRIPTION 1......",
-    "color" : Colors.red
+    "color" : Colors.red,
+    "debut" : 9,
+    "fin" : 20,
+    "jourDebut" : "Lun",
+    "jourFin" : "Mer",
+
   },
   {
     "title" : "TITRE 2",
     "description" : "DESCRIPTION 1......",
-    "color" : Colors.red
+    "color" : Colors.teal,
+    "debut" : 9,
+    "fin" : 20,
+    "jourDebut" : "Lun",
+    "jourFin" : "Mer",
   },
   {
     "title" : "TITRE 3",
     "description" : "DESCRIPTION 3......",
-    "color" : Colors.red
+    "color" : Colors.orange,
+    "debut" : 9,
+    "fin" : 20,
+    "jourDebut" : "Lun",
+    "jourFin" : "Mer",
   },
   {
     "title" : "TITRE 5",
     "description" : "DESCRIPTION 5......",
-    "color" : Colors.red
+    "color" : Colors.blueGrey,
+    "debut" : 9,
+    "fin" : 20,
+    "jourDebut" : "Lun",
+    "jourFin" : "Mer",
   }
 ];
